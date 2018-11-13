@@ -2,7 +2,7 @@
 
 例题
 
-1. Reconstruct Itinerary
+1. [Reconstruct Itinerary](https://leetcode.com/problems/reconstruct-itinerary/description/)
 
 
 
@@ -84,6 +84,50 @@ public:
                 dfs(vvi, i, vi, n, re, f);
                 vi.pop_back();
                 vvi[start][i]++;  
+            }
+                
+        }
+    }
+};
+```
+
+参考discuss改进了一下： 但速度还是更慢了 40ms
+
+```c++
+class Solution {
+public:
+    vector<string> findItinerary(vector<pair<string, string>> tickets) {
+        
+      
+        unordered_map<string, set<string>> ma;
+        unordered_map<string, int> record; 
+       
+       	for(auto v : tickets){
+            ma[v.first].insert(v.second); 
+            record[v.first + v.second]++; //这里很漂亮
+        }
+        vector<string> vs, re;
+        int n = tickets.size() + 1;
+        vs.push_back("JFK");
+        bool f = false;
+        dfs(ma, record, "JFK", vs, n, re, f);
+        return re;
+    }
+    
+    void dfs(unordered_map<string, set<string>>& ma, unordered_map<string, int>& record, string start, vector<string>& vs, int n, vector<string>& re, bool& f){
+        if(f) return;
+        if(vs.size() == n){
+            re = vs; 
+            f = true;
+            return;
+        }
+        for(auto des : ma[start]){
+            if(record.find(start + des) != record.end() && record[start + des] > 0){
+                record[start + des]--;
+                vs.push_back(des);
+                dfs(ma, record, des, vs, n, re, f);
+                vs.pop_back();
+                record[start + des]++;  
             }
                 
         }
