@@ -85,7 +85,7 @@
 
   两种方法做该题，一是dfs，二是从所有终点开始拓扑排序。
 
-  ![1542087639394](C:\Users\guoylong\AppData\Roaming\Typora\typora-user-images\1542087639394.png)
+  ![dfs](https://raw.githubusercontent.com/gccon/coding/master/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/DFS%E5%88%A4%E6%96%AD%E7%8E%AF.png)
 
   ```c++
   class Solution {
