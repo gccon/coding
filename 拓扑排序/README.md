@@ -1,4 +1,4 @@
-# 图是否有环(Kahn算法和基于DFS求解法)
+# 图是否有环拓扑排序(Kahn算法和基于DFS求解法)
 
  拓扑排序是对**有向无环图(DAG)**进行排序，从而找到一个序列。该序列满足对于任意一对不同的顶点u,v∈V，若G中存在一条从u->v的边，则在此序列中u在v前面.
 拓扑排序也可以用来判断一个有向图是否存在环。
@@ -74,10 +74,13 @@
 
   深度优先遍历该图，如果在遍历的过程中，发现某个节点有一条边指向已经访问过的节点，则表示存在环。但是我们不能仅仅使用一个bool数组来标志节点是否访问过。
 
-  对每个节点分为三种状态，白、灰、黑。
-   开始时所有节点都是白色（0），当开始访问某个节点时该节点变为灰色（1），当该节点的所有邻接点都访问完，该节点颜色变为黑色（2）。
+  ***对每个节点分为三种状态，白、灰、黑。***
+
+  ***开始时所有节点都是白色（0），当开始访问某个节点时该节点变为灰色（1），当该节点的所有邻接点（即访问到没有邻接点的节点）都访问完，该节点颜色变为黑色（2）***
 
   那么我们的算法则为：如果遍历的过程中发现某个节点有一条边指向颜色为灰（1）的节点，那么存在环。
+
+  - dfs的方法，也可以来求图的拓扑排序，图的拓扑排序可以看成是图中所有顶点沿水平线排列而成的一个序列。使得所有的有向边均从左指向右。即下面变黑2的顺序反过来就是了。
 
   [802. Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/description/) 
 
@@ -127,3 +130,44 @@
       }
   };
   ```
+
+
+
+
+
+
+无向图的例子
+
+[684. Redundant Connection](https://leetcode.com/problems/redundant-connection/description/)
+
+题目大意是找出多余的那条造成环的边，这道题用***并查集***做。对每个点找father节点，如果是两个节点的father一样的那么直接返回那条多余的边就可以了
+
+```c++
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<int> f(1005); //这里要加大 1000是不够的
+        for(int i = 0; i < f.size(); i++) f[i] = i;
+       // vector<int> vi;
+        for(auto v : edges){
+            int v1 = v[0], v2 = v[1];
+            while(f[v1] != v1) v1 = f[v1];//找father节点
+            while(f[v2] != v2) v2 = f[v2];
+            if(v1 == v2) return v;//这道题只有一个多余的边，所以找到后可以直接返回
+            else {//路径压缩
+                //f[v1] = v2;
+                Union(v[0], v2, f);
+                Union(v[1], v2, f);
+            }//合并起来
+        }
+    }
+    void Union(int v, int father, vector<int>& f){
+        while(f[v] != father){ //这里是路径压缩
+            int t = f[v];
+            f[v] = father;
+            v = t;
+        }
+    }
+};
+```
+
