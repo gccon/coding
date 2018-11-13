@@ -28,12 +28,12 @@
 
   （上述的入队列的顺序或者出队列的就是有向图的其中一个拓扑排序）
 
-  参考：[207. Course Schedule](https://leetcode.com/problems/course-schedule/description/)
+  参考：[207. Course Schedule](https://leetcode.com/problems/course-schedule/description/) 
 
   [210. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/description/)
 
   ```c++
-  
+  //两道题的思想就是课程排列，完成某个课程有前驱要求，最后输出是否能完成所有课程。
   class Solution {
   public:
       //判断拓扑排序中是否有环路
@@ -64,6 +64,66 @@
           }
           if(vi.size() == numCourses) return true;
           else return false;
+      }
+  };
+  ```
+
+
+
+  2, dfs的方法
+
+  深度优先遍历该图，如果在遍历的过程中，发现某个节点有一条边指向已经访问过的节点，则表示存在环。但是我们不能仅仅使用一个bool数组来标志节点是否访问过。
+
+  对每个节点分为三种状态，白、灰、黑。
+   开始时所有节点都是白色（0），当开始访问某个节点时该节点变为灰色（1），当该节点的所有邻接点都访问完，该节点颜色变为黑色（2）。
+
+  那么我们的算法则为：如果遍历的过程中发现某个节点有一条边指向颜色为灰（1）的节点，那么存在环。
+
+  [802. Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/description/) 
+
+  该题即找出有向图中能走到结束的点的集合（走不进循环里面的点）
+
+  两种方法做该题，一是dfs，二是从所有终点开始拓扑排序。
+
+  ![1542087639394](C:\Users\guoylong\AppData\Roaming\Typora\typora-user-images\1542087639394.png)
+
+  ```c++
+  class Solution {
+  public:
+      vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+          int n = graph.size();
+          if(n==0) return {};
+          if(n==1){
+              if(graph[0].size() == 0) return {0}; //只有一个节点0,没有边
+              else return {};  
+          }
+          //有向图的拓扑排序，每条有向边要反过来，相当于从本来结束的点开始溯源，因为从可以结束的点往回溯，只要那些点不在环上，都是可以到达结束的点的
+          //环上的边，反过来，还是环，所以不影响的。
+          vector<vector<int>> vvi(n); //类似拓扑排序了
+          vector<int> vi;
+          queue<int> q;
+          vector<int> indegree(n);
+          for(int i = 0; i < n; i++){
+              int m = graph[i].size();
+              indegree[i] = m;
+              if(m == 0) q.push(i);
+              for(int j = 0; j < m; j++){
+                  vvi[graph[i][j]].push_back(i); //这里是把每条边反过来
+              }
+          }
+          while(!q.empty()){
+              int s = q.size();
+              while(s--){
+                  int t = q.front(); q.pop();
+                  vi.push_back(t);
+                  for(int a : vvi[t]){
+                      indegree[a]--;
+                      if(indegree[a] == 0) q.push(a);
+                  }
+              }
+          }
+          sort(vi.begin(), vi.end());
+          return vi;
       }
   };
   ```
