@@ -8,7 +8,7 @@
 
 从jfk机场开始 找出能完成所有航程而且 字母序最小的序列 dfs的一个应用吧
 
-best 代码
+best 代码（这个代码参考算法导论里面拓扑排序，的dfs解法，相当于到底之后才把airport放进去，最后还要把rst反过来。
 
 ```c++
 class Solution {
@@ -137,3 +137,8 @@ public:
 
 
 
+k老师的解法：
+
+看dfs里面，有且仅有res.size==ans的时候，才会返回1， 其他时候都是0， 所以15行 那里0的时候相当于什么都没做。只有是1的时候才做了。做完了就return了。
+
+![aa](https://raw.githubusercontent.com/gccon/coding/master/dfs/8.png)
