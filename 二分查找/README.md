@@ -27,9 +27,11 @@ STL里面的lower_bound和upper_bound ，返回迭代器
 
 在从小到大的排序数组中，
 
-lower_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个***大于或等于*** num的数字，找到返回该数字的地址（迭代器），不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+**lower_bound( begin, end, num)**：从数组的begin位置到end-1位置二分查找第一个***大于或等于*** num的数字，找到返回该数字的地址（迭代器），不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
 
-upper_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个***大于*** num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+**upper_bound( begin, end, num)**：从数组的begin位置到end-1位置二分查找第一个***大于*** num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。
+
+**bool binary_search(begin, end, target)**  找到了返回1，没找到返回0
 
 ```c++
 int num[6]={1,2,4,7,15,34}; 

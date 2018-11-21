@@ -22,3 +22,23 @@ public:
 };
 ```
 
+```c++
+int func(int x){
+    int countx = 0;//作用是统计x的二进制表示中 1的位数
+    while(x){
+        countx++;
+        x = x&(x-1);
+    }
+    return countx;
+} 
+```
+
+## 用来判断某数是否是2的N次幂
+
+```c++
+int func(int x){
+    if( (x&(x-1)) == 0 ) return 1;  //如果是0，则表示x是2的n次方
+    else return 0; //注意上面==优先级大于 & 所以一定要带上括号！！！！！！
+}
+```
+
