@@ -51,13 +51,18 @@ class Solution {
 
 /* using n & -n which get the right most 1 bit (set bit) of n, for example:
 n = 5, -n = -5
-n & -n = 0101 & 1011 = 0001, the right most set bit of 5 is 0001.
+n & -n = 00000101 & 11111011 = 00000001, the right most set bit of 5 is 0001.
 Another example:
 n = 12, -n = -12
-n & -n = 1100 & 0100=0100, as you can see the right most set bit of 12 is 0100
+n & -n = 00001100 & 11110100 =0100, as you can see the right most set bit of 12 is 0100
 */
+				//  5原码:00000101     5的反码:00000101   5的补码:00000101   
+//负数是补码表示的 // -5原码:10000101    -5的反码:11111010  -5的补码:11111011  
+//正数负数都是补码表示:正数原码反码补码都一样，负数补码为反码+1
 
-//负数是补码表示的 // 10000101 原码 10000010  补码 10000011  
+// 16原码:00010000     16的反码:00010000   16的补码:00010000   
+//-16原码:10010000    -16的反码:11101111  -16的补码:11110000
+// 16&(-16) == 16
 ```
 
 
@@ -85,4 +90,29 @@ int quick_pow(int a,int b)
 }
 
 ```
+
+
+
+找单身狗 single number III 只有两个单身狗，其他都是一对对的。
+
+```c++
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 2) return nums;
+        int t = 0;
+        for(auto n : nums) t ^= n;   //t就是最后单身狗xor的结果
+        t = t & (-t);   // 看上面， 找到最右边那位，，单身狗不一样，异或的结果显然大于0，所以某位不同的就是他们的区别，当然可能有很多位不同，我们找到最右边一位来标记。把单身狗分开来。
+        vector<int> re{0,0};
+        for(auto n : nums){
+            if(n & t) re[0]^=n;   //分开两个单身狗即可。
+            else re[1]^=n;
+        }
+        return re;
+    }
+};
+```
+
+
 

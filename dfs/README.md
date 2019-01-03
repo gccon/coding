@@ -142,3 +142,9 @@ k老师的解法：
 看dfs里面，有且仅有res.size==ans的时候，才会返回1， 其他时候都是0， 所以15行 那里0的时候相当于什么都没做。只有是1的时候才做了。做完了就return了。
 
 ![aa](https://raw.githubusercontent.com/gccon/coding/master/dfs/8.png)
+
+
+
+
+
+DFS回溯的要点是注意不要往回走了，也就是走过的路不能重复走，否则陷入死循环，最后有个visit数组，标志下是否走过，走过了就不要走了
